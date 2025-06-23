@@ -6,13 +6,15 @@ import SearchBar from "../components/SearchBar";
 import RecipeCard from "../components/RecipeCard";
 
 import './styles/Home.css'
+import FilterRecipe from "../components/FilterRecipe";
 
 export default function Home() {
     const [query, setQuery] = useState("");//query:String
     const [recipes, setRecipes] = useState([]);//array
     const [isLoading, setisLoading] = useState(false);
     const [error, setError] = useState(null);
-
+    const [filterValue,setFilterValue]=useState("Filter by Area")
+    const [areaDef,setAreaDef]=useState("Filter by Area")
 
     useEffect(() => {
         setisLoading(true);
@@ -27,6 +29,12 @@ export default function Home() {
             <h1>Quick Recipe Finder App</h1>
             <section style={{textAlign:"center"}}>Powered by <a href="https://www.themealdb.com/">TheMealDB</a></section>
             <SearchBar value={query} onChange={setQuery} />
+            <FilterRecipe
+                value={filterValue}
+                onChange={setFilterValue}
+                recipesArray={recipes}
+                filterKey={"strArea"}
+                defaultValue={areaDef} />
 
             {isLoading&&<p>Loading...</p>}
             {error && <p>{error}</p>}
@@ -41,7 +49,7 @@ export default function Home() {
           </div>
         ))} */}
         {recipes.map(recipe => (
-                    <RecipeCard key={recipe.idMeal} recipe={recipe} />
+            <RecipeCard key={recipe.idMeal} recipe={recipe} filterDefaultValue={areaDef} filterValue={filterValue} />
         ))}
                 
                 

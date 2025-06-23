@@ -24,7 +24,7 @@
         max-width: 500px; */
     border-radius: .5rem;
   }
-  border: .5rem solid black;
+  border: 1px solid black;
   border-radius: .5rem;
 }
 .recipe-grid__item__links{
