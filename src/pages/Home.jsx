@@ -7,6 +7,7 @@ import RecipeCard from "../components/RecipeCard";
 
 import './styles/Home.css'
 import FilterRecipe from "../components/FilterRecipe";
+// import background as '..'
 
 export default function Home() {
     const [query, setQuery] = useState("");//query:String
@@ -27,7 +28,7 @@ export default function Home() {
     return (
         < div style={{display:'flex',flexDirection:'column',alignItems:'center'}}>
             <h1>Quick Recipe Finder App</h1>
-            <section style={{textAlign:"center"}}>Powered by <a href="https://www.themealdb.com/">TheMealDB</a></section>
+            <section style={{textAlign:"center",color:"white"}}>Powered by <a href="https://www.themealdb.com/">TheMealDB</a></section>
             <SearchBar value={query} onChange={setQuery} />
             <FilterRecipe
                 value={filterValue}

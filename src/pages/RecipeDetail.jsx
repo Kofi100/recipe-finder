@@ -1,7 +1,7 @@
 import { useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import SentenceList from '../components/SentenceList';
-
+import './styles/RecipeDetail.css'
 export default function RecipeDetail() {
   const { id } = useParams();
   const [recipe, setRecipe] = useState(null);
@@ -20,7 +20,7 @@ export default function RecipeDetail() {
   return (
     <div className="p-4" style={{textAlign:"start"}}>
           <h1>{recipe.strMeal}</h1>
-          <h2>{recipe.strArea}</h2>
+          <h2 className='recipeDetail--h2'>{recipe.strArea}</h2>
       <img src={recipe.strMealThumb} alt={recipe.strMeal} />
           <p><strong>Category:</strong> {recipe.strCategory}</p>
         {recipe.strYoutube &&
