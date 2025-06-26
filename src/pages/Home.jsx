@@ -16,7 +16,11 @@ export default function Home() {
     const [isLoading, setisLoading] = useState(false);
     const [error, setError] = useState(null);
     const [filterValue,setFilterValue]=useState("Filter by Area")
-    const [areaDef,setAreaDef]=useState("Filter by Area")
+    const [areaDef, setAreaDef] = useState("Filter by Area")
+    const [favorites, setFavorites] = useState(() => {
+        return JSON.parse(localStorage.getItem('favorites')) || [];
+    });
+    
 
     useEffect(() => {
         setisLoading(true);
@@ -33,6 +37,26 @@ export default function Home() {
      
     
     }, [query]);
+
+    function toggleFavorite(recipe) {
+  //check if recipe is in favourites using idMeal      
+    const exists = favorites.find(r => r.idMeal === recipe.idMeal);
+    const updated = exists
+    //removes recipe if already in favourites list
+    //by separating it from the rest as seen in !=== returning no
+    //recipe.idMeal
+    ? favorites.filter(r => r.idMeal !== recipe.idMeal)
+    //adds recipe if it's not in the favourites list
+    : [...favorites, recipe];
+//set favourites to updated list
+        setFavorites(updated);
+//save to localStorage by stringfying it
+  localStorage.setItem('favorites', JSON.stringify(updated));
+    }
+    
+
+
+
     return (
         < div style={{display:'flex',flexDirection:'column',alignItems:'center'}}>
             <h1>Quick Recipe Finder App</h1>
@@ -62,7 +86,15 @@ export default function Home() {
           </div>
         ))} */}
         {recipes.map(recipe => (
-            <RecipeCard key={recipe.idMeal} recipe={recipe} filterDefaultValue={areaDef} filterValue={filterValue} />
+            <RecipeCard
+                key={recipe.idMeal}
+                recipe={recipe}
+                filterDefaultValue={areaDef}
+                filterValue={filterValue}
+                //.some() to check if the current recipe is in favorites
+                isFavorite={favorites.some(r => r.idMeal === recipe.idMeal)}  
+                onFavorite={toggleFavorite}
+            />
         ))}
                 
                 

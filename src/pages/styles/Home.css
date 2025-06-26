@@ -42,6 +42,28 @@
       margin: .5rem 0 .2rem 0;
     }
 }
+.heart-btn {
+  font-size: 1.5rem;
+  transition: transform 0.2s ease;
+  background: none;
+  border: none;
+  cursor: pointer;
+  /* to help browsers optimize the animation */
+  will-change: transform;
+}
+/* pulse animation using keyframes in percentages for pop in,out and in effect */
+@keyframes popHeart {
+  0%{transform: scale(1);}
+  50%{transform: scale(1.5);}
+  100%{transform: scale(1);}
+  
+}
+
+.heart-btn.animate {
+  /* transform: pulse; */
+  animation: popHeart .3s ease-in; 
+  /* delay iteration-count direction fill-mode; */
+}
 
 .skeleton {
   animation: pulse 1.5s infinite ease-in-out;
