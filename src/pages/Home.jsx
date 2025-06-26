@@ -7,6 +7,7 @@ import RecipeCard from "../components/RecipeCard";
 
 import './styles/Home.css'
 import FilterRecipe from "../components/FilterRecipe";
+import SkeletonCard from "../components/SkeletonCard";
 // import background as '..'
 
 export default function Home() {
@@ -19,16 +20,23 @@ export default function Home() {
 
     useEffect(() => {
         setisLoading(true);
-        fetchRecipes(query)
-            .then(setRecipes)
-            .catch ((err) => setError(err.message))
-            .finally(() => setisLoading(false));
+        setError(null);
+        //timer delay of 3s
+        const timer = setTimeout(() => {
+            fetchRecipes(query)
+                .then(setRecipes)
+                .catch((err) => setError(err.message))
+                .finally(() => setisLoading(false));
+        }, 1000);
+          // Cleanup timeout if query changes quickly
+        return () => clearTimeout(timer);
+     
     
     }, [query]);
     return (
         < div style={{display:'flex',flexDirection:'column',alignItems:'center'}}>
             <h1>Quick Recipe Finder App</h1>
-            <section style={{textAlign:"center",color:"white"}}>Powered by <a href="https://www.themealdb.com/">TheMealDB</a></section>
+            <section style={{textAlign:"center",color:"white"}}>Powered by <a href="https://www.themealdb.com/" style={{color:"darkgreen",fontWeight:"bold"}}>TheMealDB</a></section>
             <SearchBar value={query} onChange={setQuery} />
             <FilterRecipe
                 value={filterValue}
@@ -37,7 +45,11 @@ export default function Home() {
                 filterKey={"strArea"}
                 defaultValue={areaDef} />
 
-            {isLoading&&<p>Loading...</p>}
+            {isLoading &&
+            <div className="recipe-grid">
+                    {Array.from({ length: 13 }).map((_, i) => <SkeletonCard key={i}/>)}
+            </div>
+            }
             {error && <p>{error}</p>}
 
 
