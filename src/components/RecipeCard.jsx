@@ -33,7 +33,7 @@ export default function RecipeCard({ recipe, filterDefaultValue,filterValue,isFa
                         
             </section>
             </section>
-            <Link to={`/recipe/${recipe.idMeal}`}>
+            <Link to={`/recipe/${recipe.idMeal}/${recipe.isSpoonacular ? 'spoon' : 'themeal'}`}>
             <img src={recipe.strMealThumb} alt={recipe.strMeal}
                 style={{ aspectRatio: 4 / 3 }} />
             </Link>

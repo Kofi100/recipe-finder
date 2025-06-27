@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 
 import { fetchRecipes } from "../services/fetchRecipes";
+import { fetchSpoonRecipes } from "../services/fetchSpoonacularRecipes";
 
 import SearchBar from "../components/SearchBar";
 import RecipeCard from "../components/RecipeCard";
@@ -23,20 +24,33 @@ export default function Home() {
     
 
     useEffect(() => {
-        setisLoading(true);
-        setError(null);
-        //timer delay of 3s
-        const timer = setTimeout(() => {
-            fetchRecipes(query)
-                .then(setRecipes)
-                .catch((err) => setError(err.message))
-                .finally(() => setisLoading(false));
-        }, 1000);
-          // Cleanup timeout if query changes quickly
-        return () => clearTimeout(timer);
-     
-    
-    }, [query]);
+  setisLoading(true);
+  setError(null);
+  const timer = setTimeout(() => {
+    Promise.all([
+      fetchRecipes(query),
+      fetchSpoonRecipes(query)
+    ])
+    .then(([mealDbResults, spoonResults]) => {
+      // Normalize Spoonacular data to match your RecipeCard structure
+      const spoonFormatted = spoonResults.map(r => ({
+        idMeal: `${r.id}`, // Unique id to avoid conflict
+        strMeal: r.title,
+        strMealThumb: r.image,
+        strArea: "Spoonacular",
+        strYoutube: null,
+        strSource: `https://spoonacular.com/recipes/${r.title.replace(/\s+/g, "-")}-${r.id}`,
+        isSpoonacular: true
+      }));
+
+      setRecipes([...mealDbResults, ...spoonFormatted]);
+    })
+    .catch((err) => setError(err.message))
+    .finally(() => setisLoading(false));
+  }, 1000);
+
+  return () => clearTimeout(timer);
+}, [query]);
 
     function toggleFavorite(recipe) {
   //check if recipe is in favourites using idMeal      
@@ -60,8 +74,10 @@ export default function Home() {
     return (
         < div style={{display:'flex',flexDirection:'column',alignItems:'center'}}>
             <h1>Quick Recipe Finder App</h1>
-            <section style={{textAlign:"center",color:"white"}}>Powered by <a href="https://www.themealdb.com/" style={{color:"darkgreen",fontWeight:"bold"}}>TheMealDB</a></section>
-            <SearchBar value={query} onChange={setQuery} />
+        <section style={{ textAlign: "center", color: "white" }}>Powered by <a href="https://www.themealdb.com/" style={{ color: "darkgreen", fontWeight: "bold" }}>TheMealDB</a>,
+          <a href="https://spoonacular.com/food-api" style={{ color: "darkgreen", fontWeight: "bold" }}>Spoonacular's API</a></section>
+        <section style={{ textAlign: "center", color: "white" }}>Background By: <a href="https://unsplash.com/photos/brown-wooden-surface-5fIoyoKlz7A" style={{ color: "darkgreen", fontWeight: "bold" }}>Jon Moore (Unsplash)</a></section>
+        <SearchBar value={query} onChange={setQuery} />
             <FilterRecipe
                 value={filterValue}
                 onChange={setFilterValue}
