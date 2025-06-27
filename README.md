@@ -68,8 +68,10 @@ Visit http://localhost:5173
 
 ## 🙌 Credits
 
-- [TheMealDB](https://www.themealdb.com/)
+- TheMealDB (https://www.themealdb.com/)
 
-- [Spoonacular API](https://spoonacular.com/food-api)
+- Spoonacular API (https://spoonacular.com/food-api)
+
+- Jon Moore (https://unsplash.com/photos/brown-wooden-surface-5fIoyoKlz7A)
 
 - Vite, React, and the OSS community
