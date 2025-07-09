@@ -7,6 +7,7 @@
 ![Spoonacular](https://img.shields.io/badge/API-Spoonacular-red)
 ![Status](https://img.shields.io/badge/status-active-brightgreen)
 
+
 ## A responsive React-based app to help users discover recipes via **TheMealDB** and **Spoonacular**. Search meals, filter by region, and view detailed instructions — all with a clean UI and local favorite saving.
 
 ---
